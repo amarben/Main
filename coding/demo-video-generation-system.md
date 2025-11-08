@@ -23,9 +23,9 @@ Use this as a template when implementing demo video generation for similar appli
 
 ### 1. Speed Configuration System
 Implement a dynamic speed multiplier system with these modes:
-- **FAST** (0.2x): Minimal delays, for testing and quick generation (~2-3 min/test)
-- **NORMAL** (1.0x): Standard timing, balanced speed (~5-7 min/test)
-- **SLOW** (2.0x): Human-paced tutorials, for final videos (~10-15 min/test)
+- **FAST** (0.2x): Minimal delays, for testing and quick generation (~2-3 min/test) - HD quality
+- **NORMAL** (1.0x): Standard timing, balanced speed (~5-7 min/test) - HD quality
+- **SLOW** (2.0x): Human-paced tutorials, for final HD videos (~10-15 min/test) - HD quality (1920x1080)
 
 **Critical Implementation:**
 ```typescript
@@ -211,14 +211,16 @@ copy_video "step-01-feature-name"
 // playwright.config.ts
 export default defineConfig({
   use: {
-    video: 'on',
-    viewport: { width: 1920, height: 1080 },
+    video: 'on', // Records HD video (1920x1080)
+    viewport: { width: 1920, height: 1080 }, // HD resolution
     launchOptions: {
       slowMo: 0, // Don't use slowMo, use wait() instead
     }
   },
 })
 ```
+
+**Important:** All videos (fast, normal, and slow modes) are recorded in HD quality (1920x1080). The speed modes only affect timing/pacing, not video quality.
 
 ### 7. Data Flow Architecture
 
@@ -286,9 +288,10 @@ Before running slow mode, verify:
 
 ## Expected Results
 
-- **Fast mode**: 11 steps in ~30-40 minutes
-- **Slow mode**: 11 steps in ~1-2 hours
-- **Output**: HD 1920x1080 WebM videos, human-paced tutorials
+- **Fast mode**: 11 steps in ~30-40 minutes - HD 1920x1080 WebM videos
+- **Normal mode**: 11 steps in ~50-70 minutes - HD 1920x1080 WebM videos
+- **Slow mode**: 11 steps in ~1-2 hours - HD 1920x1080 WebM videos (human-paced tutorials)
+- **Video Quality**: All modes produce HD quality (1920x1080) - speed only affects pacing
 - **Success rate**: 100% (after fast mode validation)
 
 ## Lessons Learned from ISMS Implementation
@@ -307,6 +310,7 @@ try {
 ### 2. Slow Mode Takes Time
 - SLOW mode at 2x multiplier can take 1-2 hours for complete generation
 - This is EXPECTED and correct behavior for human-paced tutorials
+- All modes produce HD quality videos (1920x1080) - speed modes only affect timing
 - Always test in FAST mode first to validate everything works
 
 ### 3. Step 5 Risk Treatment Pattern
